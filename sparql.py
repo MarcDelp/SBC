@@ -1,4 +1,5 @@
 import urllib2
+from time import sleep
 
 from recup_tsv import is_associated_91_91, is_associated_91_182, is_associated_test
 
@@ -14,8 +15,7 @@ request.add_header('Authorization', "Basic " + (user + ":" + password).encode("b
 
 
 def create_query(gene, medicine):
-    query = """
-query=PREFIX atc: <http://bio2rdf.org/atc:>
+    query = """query=PREFIX atc: <http://bio2rdf.org/atc:>
 PREFIX bio2rdfv: <http://bio2rdf.org/bio2rdf_vocabulary:>
 PREFIX clinvar: <http://bio2rdf.org/clinvar:>
 PREFIX clinvarv: <http://bio2rdf.org/clinvar_vocabulary:>
@@ -73,20 +73,61 @@ WHERE {pharmgkb:%(medicine)s pharmgkbv:x-drugbank ?drug2.
     return query
 
 # make the http request which is equivalent to : 
-# curl --user student:5hoPpeR4 -v -H 'Accept:application/sparql-results+json' -X POST https://pgxlod.loria.fr/bigdata/namespace/kb/sparql --data-urlencode 'query=sparqlQuery'
+# curl --user student:5hoPpeR4 -v -H 'Accept:applicxation/sparql-results+json' -X POST https://pgxlod.loria.fr/bigdata/namespace/kb/sparql --data-urlencode 'query=sparqlQuery'
 i = 1
+passed = []
 for (gene, medicine) in is_associated_91_91:
     print '============== Iteration %(i)d ==============' % {'i': i}
     print 'gene =', gene, ', medicine =', medicine
-    query = create_query(gene, medicine)
-    print query
-    result = urllib2.urlopen(url=request, data='query=SELECT * { ?s ?p ?o } LIMIT 1')
-    print result.read()
-    #result = urllib2.urlopen(url=request, data=query)
-    print "request successful"
-    #destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
-    #destination.write("graph = %s" % result.read())
-    #destination.close()
-    #result.close()
-    #i += 1
-    break
+    try:
+        query = create_query(gene, medicine)
+        result = urllib2.urlopen(url=request, data=query)
+        print "request successful"
+        destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
+        destination.write("graph = %s" % result.read())
+        destination.close()
+        result.close()
+        i += 1
+        sleep(10)
+    except Exception:
+	print "request failed"
+        passed.append(i)
+        i += 1
+
+for (gene, medicine) in is_associated_91_182:
+    print '============== Iteration %(i)d ==============' % {'i': i}
+    print 'gene =', gene, ', medicine =', medicine
+    try:
+        query = create_query(gene, medicine)
+        result = urllib2.urlopen(url=request, data=query)
+        print "request successful"
+        destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
+        destination.write("graph = %s" % result.read())
+        destination.close()
+        result.close()
+        i += 1
+        sleep(10)
+    except Exception:
+	print "request failed"
+        passed.append(i)
+        i += 1
+
+for (gene, medicine) in is_associated_test:
+    print '============== Iteration %(i)d ==============' % {'i': i}
+    print 'gene =', gene, ', medicine =', medicine
+    try:
+        query = create_query(gene, medicine)
+        result = urllib2.urlopen(url=request, data=query)
+        print "request successful"
+        destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
+        destination.write("graph = %s" % result.read())
+        destination.close()
+        result.close()
+        i += 1
+        sleep(10)
+    except Exception:
+	print "request failed"
+        passed.append(i)
+        i += 1
+
+print i, passed
