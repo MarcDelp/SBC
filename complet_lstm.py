@@ -1,4 +1,4 @@
-from theano_lstm import LSTM, RNN, StackedCells, Layer, create_optimization_updates, masked_loss
+from theano_lstm import Embedding,LSTM, RNN, StackedCells, Layer, create_optimization_updates, masked_loss
 
 def softmax(x):
     """
