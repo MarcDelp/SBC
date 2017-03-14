@@ -2,6 +2,7 @@ import urllib2
 from time import sleep
 
 from recup_tsv import is_associated_91_91, is_associated_91_182, is_associated_test
+from Result_temp import graph
 
 url = 'http://localhost:9999/blazegraph/namespace/kb/sparql'
 
@@ -310,63 +311,75 @@ def create_query(gene, medicine):
 		}
     """ % {'gene': gene, 'medicine': medicine}
 
-    return query
+	return query
 
 
-i = 1
-passed = []
-for (gene, medicine) in is_associated_91_91:
-    print '============== Iteration %(i)d ==============' % {'i': i}
-    print 'gene =', gene, ', medicine =', medicine
-    try:
-        query = create_query(gene, medicine)
-        result = urllib2.urlopen(url=request, data=query)
-        print "request successful"
-        destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
-        destination.write("graph = %s" % result.read())
-        destination.close()
-        result.close()
-        i += 1
-        sleep(10)
-    except Exception:
-	print "request failed"
-        passed.append(i)
-        i += 1
+def get_all_pairs_info():
+    i = 1
+    skipped = []
 
-for (gene, medicine) in is_associated_91_182:
-    print '============== Iteration %(i)d ==============' % {'i': i}
-    print 'gene =', gene, ', medicine =', medicine
-    try:
-        query = create_query(gene, medicine)
-        result = urllib2.urlopen(url=request, data=query)
-        print "request successful"
-        destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
-        destination.write("graph = %s" % result.read())
-        destination.close()
-        result.close()
-        i += 1
-        sleep(10)
-    except Exception:
-	print "request failed"
-        passed.append(i)
-        i += 1
+    for (gene, medicine) in is_associated_91_91:
+        print '============== Iteration %(i)d ==============' % {'i': i}
+        print 'gene =', gene, ', medicine =', medicine
+        try:
+            query = create_query(gene, medicine)
+            result = urllib2.urlopen(url=request, data=query)
+            print "request successful"
+            destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
+            destination.write("graph = %s" % result.read())
+            destination.close()
+            result.close()
+            i += 1
+            sleep(10)
+        except Exception:
+            print "request failed"
+            skipped.append(i)
+            i += 1
 
-for (gene, medicine) in is_associated_test:
-    print '============== Iteration %(i)d ==============' % {'i': i}
-    print 'gene =', gene, ', medicine =', medicine
-    try:
-        query = create_query(gene, medicine)
-        result = urllib2.urlopen(url=request, data=query)
-        print "request successful"
-        destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
-        destination.write("graph = %s" % result.read())
-        destination.close()
-        result.close()
-        i += 1
-        sleep(10)
-    except Exception:
-	print "request failed"
-        passed.append(i)
-        i += 1
+    for (gene, medicine) in is_associated_91_182:
+        print '============== Iteration %(i)d ==============' % {'i': i}
+        print 'gene =', gene, ', medicine =', medicine
+        try:
+            query = create_query(gene, medicine)
+            result = urllib2.urlopen(url=request, data=query)
+            print "request successful"
+            destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
+            destination.write("graph = %s" % result.read())
+            destination.close()
+            result.close()
+            i += 1
+            sleep(10)
+        except Exception:
+            print "request failed"
+            skipped.append(i)
+            i += 1
 
-print i, passed
+    for (gene, medicine) in is_associated_test:
+        print '============== Iteration %(i)d ==============' % {'i': i}
+        print 'gene =', gene, ', medicine =', medicine
+        try:
+            query = create_query(gene, medicine)
+            result = urllib2.urlopen(url=request, data=query)
+            print "request successful"
+            destination = open("graphes/%s-%s.py" % (gene, medicine), "w")
+            destination.write("graph = %s" % result.read())
+            destination.close()
+            result.close()
+            i += 1
+            sleep(10)#
+        except Exception:
+            print "request failed"
+            skipped.append(i)
+            i += 1
+
+    print i, skipped
+
+
+def convert_sparql(dict):
+    results = dict["results"]
+    res = []
+    for rel in results["bindings"]:
+        triple = (rel["subject"]["value"], rel["predicate"]["value"], rel["object"]["value"])
+        res.append(triple)
+
+    return res
