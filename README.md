@@ -16,11 +16,11 @@ Le fichier sparql.py contient trois éléments :
 Le fichier recup_tsv.py permet de lire les fichiers TSV qui sont dans le dossier training.  
 Enfin, le fichier complet_lstm.py permet quant à lui de lancer le LSTM sur les chemins de données récupérés entre les médicaments et les gènes.  
 
-### Comment configurer et lancer le projet 
-
-
-
 ### Éléments inachevés
+
+Les requêtes SPARQL ne fonctionnent pas sur tous les couples gène/médicament, donc il faudrait pouvoir prendre en compte tous les cas possibles.  
+De plus, le code du LSTM est à adapter à notre problème car il ne peut pas actuellement donner des résultats.   
+Enfin, il faudrait automatiser l'ensemble du processus afin de pouvoir facilement lancer le code.
 
 ### Lien vers la présentation
 
