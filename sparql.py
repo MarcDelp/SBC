@@ -2,7 +2,6 @@ import urllib2
 from time import sleep
 
 from recup_tsv import is_associated_91_91, is_associated_91_182, is_associated_test
-from Result_temp import graph
 
 url = 'http://localhost:9999/blazegraph/namespace/kb/sparql'
 
