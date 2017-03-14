@@ -1,4 +1,4 @@
-rom theano_lstm import Embedding, LSTM, RNN, StackedCells, Layer, create_optimization_updates, masked_loss
+from theano_lstm import Embedding, LSTM, RNN, StackedCells, Layer, create_optimization_updates, masked_loss
 celltype=LSTM
 self.model = StackedCells(input_size, celltype=celltype, layers =[hidden_size] * stack_size)
 # add an embedding
@@ -80,4 +80,3 @@ def initial_state_with_taps(layer, dimensions = None):
         return dict(initial=state, taps=[-1])
     else:
         return None
-	
