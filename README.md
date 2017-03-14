@@ -8,9 +8,23 @@ Plus précisément, nous cherchons à prédire des liens entre des médicaments 
 
 ### Fonctionnement des sources
 
+Le fichier sparql.py contient trois éléments :  
+* une fonction permettant de créer une requête SPARQL dont l'objectif est de trouver un lien dans le triple store entre un médicament et un gène donnés ;  
+* une fonction qui envoie une requête http au serveur contenant le triple store (afin d'avoir la réponse à une requête SPARQL), un serveur local dans notre cas ;  
+* une fonction qui permet de convertir les donnéees récupérées de la requête http (format JSON) en des données plus facilement utilisables.  
+
+Le fichier recup_tsv.py permet de lire les fichiers TSV qui sont dans le dossier training.  
+Enfin, le fichier complet_lstm.py permet quant à lui de lancer le LSTM sur les chemins de données récupérés entre les médicaments et les gènes.  
+
 ### Comment configurer et lancer le projet 
 
+
+
 ### Éléments inachevés
+
+### Lien vers la présentation
+
+https://docs.google.com/a/esial.net/presentation/d/1acybXNnt1moMRbSgBa83Y9GFeH3mbFjhVPLYtv_yb_0/edit?usp=sharing
 
 ### Collaborateurs
 
