@@ -31,7 +31,7 @@ def create_query(gene, medicine):
 		PREFIX umls: <http://bio2rdf.org/umls:>
 		PREFIX uniprot: <http://bio2rdf.org/uniprot:>
 
-		CONSTRUCT {}
+		SELECT *
 		WHERE {
 			OPTIONAL {
 				pharmgkb:%(gene)s pharmgkbv:x-uniprot ?uniprot_gene.
